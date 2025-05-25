@@ -1,12 +1,19 @@
+# Compiler settings (Uncomment based on OS)
+# For FreeBSD:
+#CC = clang
+#CFLAGS = -g -I/usr/src/usr.sbin/ppp
+# For Linux:
 CC = gcc
-CFLAGS = -g -Wall
-LIBS = -lpcap
+CFLAGS = -g
 
-TARGET = packet_sniffer
+LDFLAGS = -lpcap
 SRC = main.c
+BIN = packet_sniffer
 
-$(TARGET): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET) $(LIBS)
+# Build process
+all:
+	$(CC) $(CFLAGS) $(SRC) -o $(BIN) $(LDFLAGS)
 
+# Clean compiled binaries (Ensure tab indentation)
 clean:
-	rm -f $(TARGET)
+	$(RM) $(BIN)

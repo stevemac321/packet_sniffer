@@ -11,7 +11,13 @@
 
 float float_array[TOTAL_FLOATS];  // Holds the converted float values
 
-#define INTERFACE "enp1s0"
+//#define INTERFACE "enp1s0"
+#ifdef __FreeBSD__
+    #define INTERFACE "em0"  // FreeBSD Ethernet interface
+#else
+    #define INTERFACE "enp1s0"  // Linux Ethernet interface
+#endif
+
 #define TARGET_MAC "00:80:E1:00:00:00"
 
 void convert_packet_to_floats(const uint8_t *packet, size_t length) ;
@@ -30,7 +36,8 @@ void packet_handler(u_char *user, const struct pcap_pkthdr *header, const u_char
         convert_packet_to_floats(packet, header->len);
 }
 
-int main() {
+int main(int argc, char *argv[])
+ {
     char errbuf[PCAP_ERRBUF_SIZE];
     pcap_t *handle;
     struct bpf_program fp;
